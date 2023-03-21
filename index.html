@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='icon.png' rel='icon' type='image/x-icon'/>
+    <title>Belamkazar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kufam:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+
+
+    <style>
+      #contenedor {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+
+      .portapapeles {
+        flex: 0 0 45%;
+        margin: 10px;
+        vertical-align: top;
+        display: block;
+
+      }
+      .textarea {
+        width: 178px;
+      }
+
+      display: inline-block;
+      width: 300px; /* ajustar el ancho máximo */
+    </style>
+  </head>
+  <body>
+    <h1>Portapapeles</h1>
+    <div id="contenedor"></div>
+    <button onclick="crearPortapapeles()">Crear nuevo portapapeles</button><br><br>
+    <script>
+      var contador = 1;
+      cargarPortapapelesGuardados();
+      function cargarPortapapelesGuardados() {
+        for (var i = 1; i <= localStorage.length; i++) {
+          var textoGuardado = localStorage.getItem("texto" + i);
+          if (textoGuardado != null) {
+            var nuevoPortapapeles = document.createElement("div");
+            nuevoPortapapeles.classList.add("portapapeles");
+            nuevoPortapapeles.innerHTML = '<textarea id="texto' + contador + '" rows="5" cols="50">' + textoGuardado + '</textarea><br>' +
+                                          '<button onclick="copiarYGardar(' + contador + ')">Copiar y Guardar en el portapapeles</button>';
+            document.getElementById("contenedor").appendChild(nuevoPortapapeles);
+            contador++;
+          }
+        }
+      }
+      function crearPortapapeles() {
+        var nuevoPortapapeles = document.createElement("div");
+        nuevoPortapapeles.classList.add("portapapeles");
+        nuevoPortapapeles.innerHTML = '<textarea id="texto' + contador + '" rows="5" cols="50"></textarea><br>' +
+                                      '<button onclick="copiarYGardar(' + contador + ')">Copiar y Guardar en el portapapeles</button>';
+        document.getElementById("contenedor").appendChild(nuevoPortapapeles);
+        localStorage.setItem("texto" + contador, "");
+        contador++;
+      }
+      function copiarYGardar(id) {
+        var texto = document.getElementById("texto" + id);
+        texto.select();
+        document.execCommand("copy");
+        localStorage.setItem("texto" + id, texto.value);
+      }
+    </script>
+  </body>
+</html>
